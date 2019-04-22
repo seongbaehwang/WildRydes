@@ -17,6 +17,6 @@
     "function-name"        : "RequestUnicornWebApi",
     "function-role"        : "arn:aws:iam::771733529616:role/WildRydesLambda",
     "tracing-mode"         : "PassThrough",
-    "environment-variables" : "\"RidesTable\"=\"Rides\"",
+    "environment-variables" : "\"RidesTable\"=\"Rides\";\"Serilog__MinimumLevel__Default\"=\"Debug\";\"Serilog__MinimumLevel__Override__Microsoft\"=\"Warning\";\"Serilog__MinimumLevel__Override__System\"=\"Warning\"",
     "function-description"  : ""
 }

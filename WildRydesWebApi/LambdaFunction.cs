@@ -17,7 +17,6 @@ namespace WildRydesWebApi
                     loggerConfiguration
                         // Serilog.Settings.Configuration is required
                         .ReadFrom.Configuration(hostingContext.Configuration)
-                        .MinimumLevel.Information()
                         .WriteTo.Console(new JsonFormatter(renderMessage: true));
                 });
         }

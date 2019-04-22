@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.Lambda.AspNetCoreServer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using WildRydesWebApi.Entities;
 using WildRydesWebApi.Models;
@@ -19,19 +20,23 @@ namespace WildRydesWebApi.Controllers
     {
         private readonly ILogger<RideController> _logger;
         private readonly IDynamoDBContext _dbContext;
+        private readonly IConfiguration _configuration;
 
-        public RideController(ILogger<RideController> logger, IDynamoDBContext dbContext)
+        public RideController(ILogger<RideController> logger, IDynamoDBContext dbContext, IConfiguration configuration)
         {
             _logger = logger;
             _dbContext = dbContext;
+            _configuration = configuration;
         }
 
         [HttpPost]
         public async Task<ActionResult<RideResponse>> Post(RideRequest request)
         {
-            _logger.LogInformation("{@LambdaContext}", Request.HttpContext.Items[AbstractAspNetCoreFunction.LAMBDA_CONTEXT]);
-            _logger.LogInformation("{@LambdaRequestObject}", Request.HttpContext.Items[AbstractAspNetCoreFunction.LAMBDA_REQUEST_OBJECT]);
-            _logger.LogInformation("{@IdentityDetails}", GetIdentityDetails().ToList());
+            _logger.LogDebug("{@Configuration}", _configuration.AsEnumerable().Select(kv => $"{kv.Key} - {kv.Value}").ToList());
+
+            _logger.LogDebug("{@LambdaContext}", Request.HttpContext.Items[AbstractAspNetCoreFunction.LAMBDA_CONTEXT]);
+            _logger.LogDebug("{@LambdaRequestObject}", Request.HttpContext.Items[AbstractAspNetCoreFunction.LAMBDA_REQUEST_OBJECT]);
+            _logger.LogDebug("{@IdentityDetails}", GetIdentityDetails().ToList());
 
             var rideId = Guid.NewGuid().ToString();
 
